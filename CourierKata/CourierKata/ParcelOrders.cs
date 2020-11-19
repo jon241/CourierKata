@@ -5,6 +5,13 @@ namespace CourierKata
 {
     public class ParcelOrders
     {
+        private Dictionary<ParcelType, int> _parcelCosts;
+
+        public ParcelOrders(Dictionary<ParcelType, int> parcelCosts)
+        {
+            _parcelCosts = parcelCosts;
+        }
+
         public TotalCosts CalculateCosts(ICollection<Dimensions> parcels)
         {
             if (parcels == null)
@@ -19,23 +26,23 @@ namespace CourierKata
                 {
                     if (dims.IsInRange(10, 50))
                     {
-                        costs.Costs.Add(new Cost(8, ParcelType.Medium));
-                        costs.Total += 8;
+                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.Medium], ParcelType.Medium));
+                        costs.Total += _parcelCosts[ParcelType.Medium];
                     }
                     else if (dims.IsInRange(50, 100))
                     {
-                        costs.Costs.Add(new Cost(15, ParcelType.Large));
-                        costs.Total += 15;
+                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.Large], ParcelType.Large));
+                        costs.Total += _parcelCosts[ParcelType.Large];
                     }
                     else if (dims.IsMinimum(100))
                     {
-                        costs.Costs.Add(new Cost(25, ParcelType.XL));
-                        costs.Total += 25;
+                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.XL], ParcelType.XL));
+                        costs.Total += _parcelCosts[ParcelType.XL];
                     }
                     else
                     {
-                        costs.Costs.Add(new Cost(3, ParcelType.Small));
-                        costs.Total += 3;
+                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.Small], ParcelType.Small));
+                        costs.Total += _parcelCosts[ParcelType.Small];
                     }
                 }
             }

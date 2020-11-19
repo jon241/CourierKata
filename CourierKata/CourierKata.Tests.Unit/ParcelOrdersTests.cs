@@ -13,7 +13,17 @@ namespace CourierKata.Tests.Unit
         [TestInitialize]
         public void Initialise()
         {
-            _orders = new ParcelOrders();
+            // Small - price 3, minDim 0, maxDim 10
+            // Medium - price 8, minDim 10, maxDim 50
+            // Large - price 15, minDim 50, maxDim 100
+            // XL - price 25, minDim 100
+            Dictionary<ParcelType, int> parcelCosts = new Dictionary<ParcelType, int>();
+            parcelCosts.Add(ParcelType.Small, 3);
+            parcelCosts.Add(ParcelType.Medium, 8);
+            parcelCosts.Add(ParcelType.Large, 15);
+            parcelCosts.Add(ParcelType.XL, 25);
+
+            _orders = new ParcelOrders(parcelCosts);
         }
 
         [TestMethod]

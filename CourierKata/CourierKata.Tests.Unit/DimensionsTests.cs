@@ -6,6 +6,7 @@ using System.Text;
 namespace CourierKata.Tests.Unit
 {
     [TestClass]
+    [TestCategory("Unit")]
     public class DimensionsTests
     {
         [TestMethod]
