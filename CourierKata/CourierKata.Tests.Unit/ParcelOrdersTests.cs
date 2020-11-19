@@ -93,5 +93,29 @@ namespace CourierKata.Tests.Unit
             Assert.AreEqual(25, calculatedOrder.Costs[0].Price, "Cost Price");
             Assert.AreEqual(ParcelType.XL, calculatedOrder.Costs[0].TypeOfParcel, "TypeOfParcel");
         }
+
+        [TestMethod]
+        public void WhenCalucateCostsHasAllParcelDimsThenAllParcelCostsReturned()
+        {
+            List<Dimensions> parcelDims = new List<Dimensions>() { 
+                new Dimensions(9, 9, 9),
+                new Dimensions(10, 10, 10),
+                new Dimensions(50, 50, 50),
+                new Dimensions(100, 100, 100)
+            };
+
+            var calculatedOrder = _orders.CalculateCosts(parcelDims);
+
+            Assert.AreEqual(51, calculatedOrder.Total, "Total");
+            Assert.AreEqual(4, calculatedOrder.Costs.Count, "Costs count");
+            Assert.AreEqual(3, calculatedOrder.Costs[0].Price, "0Cost Price");
+            Assert.AreEqual(ParcelType.Small, calculatedOrder.Costs[0].TypeOfParcel, "0TypeOfParcel");
+            Assert.AreEqual(8, calculatedOrder.Costs[1].Price, "1Cost Price");
+            Assert.AreEqual(ParcelType.Medium, calculatedOrder.Costs[1].TypeOfParcel, "1TypeOfParcel");
+            Assert.AreEqual(15, calculatedOrder.Costs[2].Price, "2Cost Price");
+            Assert.AreEqual(ParcelType.Large, calculatedOrder.Costs[2].TypeOfParcel, "2TypeOfParcel");
+            Assert.AreEqual(25, calculatedOrder.Costs[3].Price, "3Cost Price");
+            Assert.AreEqual(ParcelType.XL, calculatedOrder.Costs[3].TypeOfParcel, "3TypeOfParcel");
+        }
     }
 }
