@@ -15,21 +15,19 @@ namespace CourierKata
 
             if (parcels.Count > 0)
             {
-                foreach (Dimensions dim in parcels)
+                foreach (Dimensions dims in parcels)
                 {
-                    if ((dim.Length >= 10 && dim.Width >= 10 && dim.Height >= 10) &&
-                        (dim.Length < 50 && dim.Width < 50 && dim.Height < 50))
+                    if (dims.IsInRange(10, 50))
                     {
                         costs.Costs.Add(new Cost(8, ParcelType.Medium));
                         costs.Total += 8;
                     }
-                    else if ((dim.Length >= 50 && dim.Width >= 50 && dim.Height >= 50) &&
-                            (dim.Length < 100 && dim.Width < 100 && dim.Height < 100))
+                    else if (dims.IsInRange(50, 100))
                     {
                         costs.Costs.Add(new Cost(15, ParcelType.Large));
                         costs.Total += 15;
                     }
-                    else if (dim.Length >= 100 && dim.Width >= 100 && dim.Height >= 100)
+                    else if (dims.IsMinimum(100))
                     {
                         costs.Costs.Add(new Cost(25, ParcelType.XL));
                         costs.Total += 25;
