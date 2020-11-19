@@ -6,6 +6,7 @@ namespace CourierKata
     {
         public decimal Total { get; internal set; }
         public List<Cost> Costs { get; }
+        public decimal SpeedyShipping { get; set; }
 
         public TotalCosts()
         {

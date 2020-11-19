@@ -9,6 +9,9 @@ namespace CourierKata
 
         public ParcelOrders(Dictionary<ParcelType, int> parcelCosts)
         {
+            if (parcelCosts == null)
+                throw new ArgumentNullException(nameof(parcelCosts));
+
             _parcelCosts = parcelCosts;
         }
 
@@ -17,7 +20,6 @@ namespace CourierKata
             if (parcels == null)
                 throw new ArgumentNullException(nameof(parcels));
 
-            // cheapest option for parcel should be selected
             var costs = new TotalCosts();
 
             if (parcels.Count > 0)
@@ -45,6 +47,8 @@ namespace CourierKata
                         costs.Total += _parcelCosts[ParcelType.Small];
                     }
                 }
+
+                costs.SpeedyShipping = costs.Total * 2;
             }
 
             return costs;

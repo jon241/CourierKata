@@ -28,6 +28,21 @@ namespace CourierKata.Tests.Unit
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        public void WhenConstructorHasNullObjectThenThrowArgumentNullException()
+        {
+            try
+            {
+                new ParcelOrders(null);
+            }
+            catch (ArgumentNullException exception)
+            {
+                Assert.AreEqual("Value cannot be null. (Parameter 'parcelCosts')", exception.Message, "Message");
+                throw;
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void WhenCalculateCostsHasNullObjectThenThrowArgumentNullException()
         {
             try 
@@ -126,6 +141,20 @@ namespace CourierKata.Tests.Unit
             Assert.AreEqual(ParcelType.Large, calculatedOrder.Costs[2].TypeOfParcel, "2TypeOfParcel");
             Assert.AreEqual(25, calculatedOrder.Costs[3].Price, "3Cost Price");
             Assert.AreEqual(ParcelType.XL, calculatedOrder.Costs[3].TypeOfParcel, "3TypeOfParcel");
+        }
+
+        [TestMethod]
+        public void WhenCalucateCostsHasParcelDimsThenParcelCostsWithSpeedyShippingReturned()
+        {
+            List<Dimensions> parcelDims = new List<Dimensions>() { new Dimensions(100, 100, 100) };
+
+            var calculatedOrder = _orders.CalculateCosts(parcelDims);
+
+            Assert.AreEqual(25, calculatedOrder.Total, "Total");
+            Assert.AreEqual(1, calculatedOrder.Costs.Count, "Costs count");
+            Assert.AreEqual(25, calculatedOrder.Costs[0].Price, "Cost Price");
+            Assert.AreEqual(ParcelType.XL, calculatedOrder.Costs[0].TypeOfParcel, "TypeOfParcel");
+            Assert.AreEqual(50, calculatedOrder.SpeedyShipping, "SpeedyShipping");
         }
     }
 }
