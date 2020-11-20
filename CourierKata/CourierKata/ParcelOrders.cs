@@ -5,64 +5,45 @@ namespace CourierKata
 {
     public class ParcelOrders
     {
-        private Dictionary<ParcelType, int> _parcelCosts;
+        private List<ParcelConfig> _parcelConfigs;
 
-        public ParcelOrders(Dictionary<ParcelType, int> parcelCosts)
+        public ParcelOrders(IEnumerable<ParcelConfig> parcelsConfig)
         {
-            if (parcelCosts == null)
-                throw new ArgumentNullException(nameof(parcelCosts));
+            if (parcelsConfig == null)
+                throw new ArgumentNullException(nameof(parcelsConfig));
 
-            _parcelCosts = parcelCosts;
+            _parcelConfigs = new List<ParcelConfig>(parcelsConfig);
         }
 
-        public TotalCosts CalculateCosts(ICollection<Dimensions> parcels)
+        public ItemisedSummary CalculateCosts(ICollection<Dimensions> parcelsDims)
         {
-            if (parcels == null)
-                throw new ArgumentNullException(nameof(parcels));
+            if (parcelsDims == null)
+                throw new ArgumentNullException(nameof(parcelsDims));
 
             // The logic to how the parcel orders are calculated are
             // contained within this class only
-            var costs = new TotalCosts();
+            var summary = new ItemisedSummary();
 
-            if (parcels.Count > 0)
+            if (parcelsDims.Count > 0)
             {
-                foreach (Dimensions dims in parcels)
+                foreach (Dimensions parcelDims in parcelsDims)
                 {
-                    if (dims.IsInRange(10, 50))
-                    {
-                        Cost cost = GetParcelCost(ParcelType.Medium);
-                        costs.Costs.Add(cost);
-                        costs.Total += cost.Price;
-                    }
-                    else if (dims.IsInRange(50, 100))
-                    {
-                        Cost cost = GetParcelCost(ParcelType.Large);
-                        costs.Costs.Add(cost);
-                        costs.Total += cost.Price;
-                    }
-                    else if (dims.IsMinimum(100))
-                    {
-                        Cost cost = GetParcelCost(ParcelType.XL);
-                        costs.Costs.Add(cost);
-                        costs.Total += cost.Price;
-                    }
-                    else
-                    {
-                        Cost cost = GetParcelCost(ParcelType.Small);
-                        costs.Costs.Add(cost);
-                        costs.Total += cost.Price;
-                    }
+                    // find the last parcel config where the parcel dims
+                    // are more than or equal to the configured minimum
+                    ParcelConfig parcelConfig = _parcelConfigs.FindLast(pc =>
+                        parcelDims.Height >= pc.MinDim &&
+                        parcelDims.Length >= pc.MinDim &&
+                        parcelDims.Width >= pc.MinDim
+                    );
+
+                    summary.Items.Add(new ParcelItem(parcelConfig.Price, parcelConfig.Type));
+                    summary.Total += parcelConfig.Price;
                 }
 
-                costs.SpeedyShipping = costs.Total * 2;
+                summary.SpeedyShipping = summary.Total * 2;
             }
 
-            return costs;
-        }
-
-        private Cost GetParcelCost(ParcelType parcelType)
-        {
-            return new Cost(_parcelCosts[parcelType], parcelType);
+            return summary;
         }
     }
 }

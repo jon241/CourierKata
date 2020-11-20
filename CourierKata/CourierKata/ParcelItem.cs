@@ -1,11 +1,11 @@
 ﻿namespace CourierKata
 {
-    public class Cost
+    public class ParcelItem
     {
         public decimal Price { get; }
         public ParcelType TypeOfParcel { get; }
 
-        public Cost(int price, ParcelType typeOfParcel)
+        public ParcelItem(decimal price, ParcelType typeOfParcel)
         {
             Price = price;
             TypeOfParcel = typeOfParcel;

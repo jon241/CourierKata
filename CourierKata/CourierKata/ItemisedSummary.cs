@@ -2,15 +2,15 @@
 
 namespace CourierKata
 {
-    public class TotalCosts
+    public class ItemisedSummary
     {
         public decimal Total { get; internal set; }
-        public List<Cost> Costs { get; }
+        public List<ParcelItem> Items { get; }
         public decimal SpeedyShipping { get; set; }
 
-        public TotalCosts()
+        public ItemisedSummary()
         {
-            Costs = new List<Cost>();
+            Items = new List<ParcelItem>();
         }
     }
 }
