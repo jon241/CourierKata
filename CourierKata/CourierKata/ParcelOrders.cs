@@ -20,6 +20,8 @@ namespace CourierKata
             if (parcels == null)
                 throw new ArgumentNullException(nameof(parcels));
 
+            // The logic to how the parcel orders are calculated are
+            // contained within this class only
             var costs = new TotalCosts();
 
             if (parcels.Count > 0)
@@ -28,23 +30,27 @@ namespace CourierKata
                 {
                     if (dims.IsInRange(10, 50))
                     {
-                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.Medium], ParcelType.Medium));
-                        costs.Total += _parcelCosts[ParcelType.Medium];
+                        Cost cost = GetParcelCost(ParcelType.Medium);
+                        costs.Costs.Add(cost);
+                        costs.Total += cost.Price;
                     }
                     else if (dims.IsInRange(50, 100))
                     {
-                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.Large], ParcelType.Large));
-                        costs.Total += _parcelCosts[ParcelType.Large];
+                        Cost cost = GetParcelCost(ParcelType.Large);
+                        costs.Costs.Add(cost);
+                        costs.Total += cost.Price;
                     }
                     else if (dims.IsMinimum(100))
                     {
-                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.XL], ParcelType.XL));
-                        costs.Total += _parcelCosts[ParcelType.XL];
+                        Cost cost = GetParcelCost(ParcelType.XL);
+                        costs.Costs.Add(cost);
+                        costs.Total += cost.Price;
                     }
                     else
                     {
-                        costs.Costs.Add(new Cost(_parcelCosts[ParcelType.Small], ParcelType.Small));
-                        costs.Total += _parcelCosts[ParcelType.Small];
+                        Cost cost = GetParcelCost(ParcelType.Small);
+                        costs.Costs.Add(cost);
+                        costs.Total += cost.Price;
                     }
                 }
 
@@ -52,6 +58,11 @@ namespace CourierKata
             }
 
             return costs;
+        }
+
+        private Cost GetParcelCost(ParcelType parcelType)
+        {
+            return new Cost(_parcelCosts[parcelType], parcelType);
         }
     }
 }
