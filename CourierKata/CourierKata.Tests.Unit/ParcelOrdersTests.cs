@@ -66,7 +66,7 @@ namespace CourierKata.Tests.Unit
         {
             try 
             {
-                _orders.CalculateCosts(null);
+                _orders.CalculateCosts(null, false);
             }
             catch (ArgumentNullException exception)
             {
@@ -80,7 +80,7 @@ namespace CourierKata.Tests.Unit
         {
             List<Dimensions> parcelDims = new List<Dimensions>() { new Dimensions(9,9,9) };
             
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, false);
 
             Assert.AreEqual(3, summary.Total, "Total");
             Assert.AreEqual(1, summary.Items.Count, "Costs count");
@@ -92,7 +92,7 @@ namespace CourierKata.Tests.Unit
         {
             List<Dimensions> parcelDims = new List<Dimensions>();
             
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, false);
 
             Assert.AreEqual(0, summary.Total, "Total");
             Assert.AreEqual(0, summary.Items.Count, "Costs count");
@@ -103,7 +103,7 @@ namespace CourierKata.Tests.Unit
         {
             List<Dimensions> parcelDims = new List<Dimensions>() { new Dimensions(10,10,10) };
 
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, false);
 
             Assert.AreEqual(8, summary.Total, "Total");
             Assert.AreEqual(1, summary.Items.Count, "Costs count");
@@ -115,7 +115,7 @@ namespace CourierKata.Tests.Unit
         {
             List<Dimensions> parcelDims = new List<Dimensions>() { new Dimensions(99, 99, 99) };
 
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, false);
 
             Assert.AreEqual(15, summary.Total, "Total");
             Assert.AreEqual(1, summary.Items.Count, "Costs count");
@@ -127,7 +127,7 @@ namespace CourierKata.Tests.Unit
         {
             List<Dimensions> parcelDims = new List<Dimensions>() { new Dimensions(100, 100, 100) };
 
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, false);
 
             Assert.AreEqual(25, summary.Total, "Total");
             Assert.AreEqual(1, summary.Items.Count, "Costs count");
@@ -144,7 +144,7 @@ namespace CourierKata.Tests.Unit
                 new Dimensions(100, 100, 100)
             };
 
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, false);
 
             Assert.AreEqual(51, summary.Total, "Total");
             Assert.AreEqual(4, summary.Items.Count, "Costs count");
@@ -160,12 +160,12 @@ namespace CourierKata.Tests.Unit
         {
             List<Dimensions> parcelDims = new List<Dimensions>() { new Dimensions(100, 100, 100) };
 
-            var summary = _orders.CalculateCosts(parcelDims);
+            var summary = _orders.CalculateCosts(parcelDims, true);
 
-            Assert.AreEqual(25, summary.Total, "Total");
+            Assert.AreEqual(50, summary.Total, "Total");
             Assert.AreEqual(1, summary.Items.Count, "Costs count");
             AssertCost(summary.Items[0], _parcelsConfig[(int)ParcelType.XL]);
-            Assert.AreEqual(50, summary.SpeedyShipping, "SpeedyShipping");
+            Assert.AreEqual(25, summary.SpeedyShipping, "SpeedyShipping");
         }
 
         private static void AssertCost(ParcelItem calculatedOrder, ParcelConfig parcelConfig)

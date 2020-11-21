@@ -8,14 +8,16 @@ branch off main and the deleted once merged. I also learnt a little more syntax 
 - Input can be in any form you choose
 - Output should be a collection of items with their individual cost and type, as well as total cost.
   - It was assumed this requirement was for an object response and not as a string output as I didn't
-    read past the current implementing step (as requested in the spec) until enough time spent on this project.
+    read past the current implementing step (as requested in the spec) until enough time was already spent 
+    on this project.
 - The cheapest option for sending each parcel should be selected.
 - Each parcel size has a fixed cost. In my case this configurable and injected via the constructor.
   - Small parcel: all dimensions < 10cm. Cost $3
   - Medium parcel: all dimensions < 50cm. Cost $8
   - Large parcel: all dimensions < 100cm. Cost $15
   - XL parcel: any dimension >= 100cm. Cost $25
-- Speedy Shipping is double the total cost and listed separately in the summary object.
+- Speedy Shipping is double the sub total cost and listed separately in the summary object and added to the
+  overall total.
 
 ## What next and how (in expected order)
 - Add weight limit for each parcel type. If a parcel is over weight then a price of $2 is charged per kg.
@@ -93,7 +95,7 @@ Pass this to the `CalculateCosts` method.
 ItemisedSummary summary = orders.CalculateCosts(parcelDims);
 ```
 
-This returns an itemised summary of the costs, total and speedy shipping. For example:
+This returns an itemised summary of the costs, speedy shipping and total. For example:
 
 ```C#
 // summary.Items[0].Type - Small
@@ -104,6 +106,32 @@ This returns an itemised summary of the costs, total and speedy shipping. For ex
 // summary.Items[2].Price - 15
 // summary.Items[3].Type - XL
 // summary.Items[3].Price - 25
-// summary.SpeedyShipping - 102
-// summary.Total 51
+// summary.SpeedyShipping - 51
+// summary.Total 102
+```
+
+Do note, the order of the dimensions list will return the items in that order in the summary. I.e
+
+```C#
+List<Dimensions> parcelDims = new List<Dimensions>() { 
+    new Dimensions(10, 10, 10),
+    new Dimensions(9, 9, 9),
+    new Dimensions(50, 50, 50),
+    new Dimensions(100, 100, 100)
+};
+```
+
+Returns as
+
+```C#
+// summary.Items[0].Type - Medium
+// summary.Items[0].Price - 8
+// summary.Items[1].Type - Small
+// summary.Items[1].Price - 3
+// summary.Items[2].Type - Large
+// summary.Items[2].Price - 15
+// summary.Items[3].Type - XL
+// summary.Items[3].Price - 25
+// summary.SpeedyShipping - 51
+// summary.Total 102
 ```

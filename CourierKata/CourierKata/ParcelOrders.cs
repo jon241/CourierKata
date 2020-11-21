@@ -3,10 +3,17 @@ using System.Collections.Generic;
 
 namespace CourierKata
 {
+    /// <summary>
+    /// Parcel orders
+    /// </summary>
     public class ParcelOrders
     {
         private List<ParcelConfig> _parcelConfigs;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="parcelsConfig">List of parcel configs</param>
         public ParcelOrders(IEnumerable<ParcelConfig> parcelsConfig)
         {
             if (parcelsConfig == null)
@@ -15,7 +22,13 @@ namespace CourierKata
             _parcelConfigs = new List<ParcelConfig>(parcelsConfig);
         }
 
-        public ItemisedSummary CalculateCosts(ICollection<Dimensions> parcelsDims)
+        /// <summary>
+        /// Calculate the costs of a parcel order
+        /// </summary>
+        /// <param name="parcelsDims">Dimensions of the parcels to be delivered</param>
+        /// <param name="isSpeedyShipping">Is speedy shipping required</param>
+        /// <returns>Itemised summary of parcel delivery costs</returns>
+        public ItemisedSummary CalculateCosts(ICollection<Dimensions> parcelsDims, bool isSpeedyShipping)
         {
             if (parcelsDims == null)
                 throw new ArgumentNullException(nameof(parcelsDims));
@@ -40,7 +53,13 @@ namespace CourierKata
                     summary.Total += parcelConfig.Price;
                 }
 
-                summary.SpeedyShipping = summary.Total * 2;
+                // speedy shipping is double the order
+                // so get the current total
+                if (isSpeedyShipping)
+                    summary.SpeedyShipping = summary.Total;
+
+                // add the shipping cost to the total
+                summary.Total += summary.SpeedyShipping;
             }
 
             return summary;
